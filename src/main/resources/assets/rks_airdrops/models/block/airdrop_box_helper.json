@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "rks_airdrops:block/airdrop_box"
+  },
+  "elements": []
+}

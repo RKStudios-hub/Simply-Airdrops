@@ -1,0 +1,68 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+group = 'com.rks.airdrop'
+version = '1.0.0'
+
+base {
+    archivesName = 'rks_simple_airdrops'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                rks_airdrops {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+        }
+
+        server {
+        }
+    }
+}
+
+repositories {
+    maven {
+        name = 'GeckoLib'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup 'software.bernie.geckolib'
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.4.9')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand version: project.version
+    }
+}

@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,open=false": {
+      "model": "rks_airdrops:block/medic_crate"
+    },
+    "facing=north,open=true": {
+      "model": "rks_airdrops:block/medic_crate"
+    },
+    "facing=east,open=false": {
+      "model": "rks_airdrops:block/medic_crate",
+      "y": 90
+    },
+    "facing=east,open=true": {
+      "model": "rks_airdrops:block/medic_crate",
+      "y": 90
+    },
+    "facing=south,open=false": {
+      "model": "rks_airdrops:block/medic_crate",
+      "y": 180
+    },
+    "facing=south,open=true": {
+      "model": "rks_airdrops:block/medic_crate",
+      "y": 180
+    },
+    "facing=west,open=false": {
+      "model": "rks_airdrops:block/medic_crate",
+      "y": 270
+    },
+    "facing=west,open=true": {
+      "model": "rks_airdrops:block/medic_crate",
+      "y": 270
+    }
+  }
+}
