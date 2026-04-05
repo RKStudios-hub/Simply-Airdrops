@@ -1,29 +1,93 @@
-# Simply Airdrops
+<h1 align="center">
+  <img width="524" height="221" alt="title" src="https://github.com/user-attachments/assets/e70ecdb4-6f44-433f-a472-8be6d4bda589" />
+</h1>
+<p align="center">
+  <img width="800" height="80" alt="image_1773467248031" src="https://github.com/user-attachments/assets/a796531e-5f22-4a58-9476-d99b5015a1b4" />
+</p>
+<p align="center">
+  <a href="#">
+    <img src="https://github.com/user-attachments/assets/3d4e037e-2e65-4f5d-ab71-8a46ba8a60a7" width="60" height="60" alt="Discord"/>
+  </a>
+  &nbsp;&nbsp;
+  <a href="#">
+    <img src="https://github.com/user-attachments/assets/2d3adbcc-01ce-4c01-82ef-82c628cbc20f" width="60" height="60" alt="Twitter"/>
+  </a>
+  &nbsp;&nbsp;
+  <a href="#">
+    <img src="https://github.com/user-attachments/assets/cf2a5174-83ae-4f22-9015-3ec21263d550" width="60" height="60" alt="Like"/>
+  </a>
+  &nbsp;&nbsp;
+  <a href="#">
+    <img src="https://github.com/user-attachments/assets/8d846e2a-e4b4-4502-ab7f-3ab2590e1e32" width="60" height="60" alt="YouTube"/>
+  </a>
+  &nbsp;&nbsp;
+  <a href="#">
+    <img src="https://github.com/user-attachments/assets/2d416633-6809-4f5f-85cd-bb17d4ddf0f0" width="60" height="60" alt="Donate"/>
+  </a>
+</p>
+<p align="center">
+  <img width="800" height="80" alt="image_1773467248031" src="https://github.com/user-attachments/assets/a796531e-5f22-4a58-9476-d99b5015a1b4" />
+</p>
+<p align="center">
+  <a href="#">
+    <img width="100" height="100" alt="modrinth" src="https://github.com/user-attachments/assets/eb37f52b-d559-47a3-9c7c-eddc703686e9" />
+  </a>
+   &nbsp;&nbsp;
+  <a href="#">
+    <img width="100" height="100" alt="curseforge" src="https://github.com/user-attachments/assets/c05e09e6-574d-4340-a27d-191193b3cdb3" />
+  </a>
+</p>
 
-Lightweight Forge 1.20.1 mod that spawns configurable airdrop events and lets you call them with a radio controller. Drops contain modular loot crates (wooden airdrop box, medic crate, plus upcoming ammo/weapon cases) and everything is driven by JSON so you can tweak timers, loot, and behavior without touching code.
+<h2 align="center">Simply Airdrops</h2>
 
-## Modname – Simply Airdrops
-- Recurring airdrops trigger every configurable `X` ticks, but you can also pop a drop manually with the radio controller.
-- Each airdrop delivers a wooden `Airdrop Box` and a `Medic Crate` today, with ammo boxes and weapon cases in the pipeline.
-- Every crate wires into GeckoLib models for 3D hand rendering and keeps contents when broken; the loot inside is defined via the mod’s JSON loot tables.
+<p align="center">
+  Simply Airdrops is a lightweight and easy to work with mod that adds exactly what the title says: airdrops.
+</p>
+
+## About
+
+Simply Airdrops is a lite weight and easy to work with mod that adds what the title simply says, you guessed right, airdrops. These airdrops are events triggered after a certain amount of time and again and again. Airdrops can also be called by a radio controller.
+
+These air drops consist of highly customisable loot crates:
+
+- 1 Wooden Crate
+- 2 Medical crate
+- 1 Ammo box
+- 1 Weapon case
+
+These drops are meant to be extremely customisable and work seamlessly with other mods like TECZ and others.
 
 ## Features
-- Scheduled drops with a configurable interval (default behavior is to keep the sky raining loot).
-- Radio controller item to call in drops at will.
-- Modular crate types backed by per-crate loot tables so you can change drop contents without rebuilding.
-- JSON-first configuration covering drop timing, spawn windows, loot tables, and crate behavior.
 
-## Implemented
-- Wooden `Airdrop Box` (GEODE-based model, 3D hand view, persistent storage, accurate hitbox).
-- `Medic Crate` (9-slot storage, GeckoLib animations, custom GUI offset).
+- Adds events known as airdrops that trigger every `X` amount of time
+- Adds a radio controller to trigger airdrop events
+- Custom drops and populated loot cases inside the airdrop's crates
+- JSON driven easy customisation
 
-## Planned
-- Ammo Box and Weapon Case crates.
-- Finish wiring the rest of the planned feature list (more crate types, refined loot controls, extra triggers).
+## Implemented Features
+
+- Added Airdrop box aka the Wooden Crate
+- Added Medic Crate
+
+## Planned Features
+
+- Everything else from the features list
 
 ## Compatibility
+
 - Mod loader: Forge
-- Minecraft version: 1.20.1
+- Current Minecraft supported version: 1.20.1
 
 ## Disclaimer
-This project is an independent fan-made creation and has no affiliation with Mojang Studios or Minecraft. Please do not report bugs or issues to Mojang or Minecraft support—send any feedback, bug reports, or questions directly to the developer.
+
+This project is an independent fan-made creation and is not affiliated with, endorsed by, or connected to Mojang Studios or Minecraft in any way.
+
+Please do not report bugs, issues, or problems related to this project to Mojang or the Minecraft support team.
+
+Any feedback, bug reports, or questions should be directed only to the developer of this project.
+
+Thank you for your understanding and support.
+
+<p align="center">
+  Made with love by <strong>RK Studios</strong>
+</p>
