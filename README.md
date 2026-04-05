@@ -3,11 +3,15 @@
   <img width="524" height="221" alt="Simply Airdrops" src="https://github.com/user-attachments/assets/e70ecdb4-6f44-433f-a472-8be6d4bda589" />
 </p>
 
-<!-- TAGLINE -->
 <h2 align="center">
-  Lightweight • Customisable • Event-Based Airdrops
+  <strong>Lightweight • Customisable • Event-Based Airdrops</strong>
 </h2>
 
+> ## 🚀 About
+
+> **Simply Airdrops** is a lightweight and easy-to-use mod that does exactly what the name suggests — it adds **dynamic airdrop events** to your world. <br> Airdrops are triggered automatically at set intervals or manually using a **radio controller**, creating engaging and repeatable gameplay moments. <br> Each airdrop contains highly customisable loot crates: <br> - 📦 Wooden Crate   <br> - 🏥 Medical Crates   <br> - 🔫 Ammo Box   <br> - ⚔️ Weapon Case   <br> Designed to be **fully configurable**, the mod integrates smoothly with other mods like TECZ and more.
+
+---
 <p align="center">
   <img width="800" height="80" alt="divider" src="https://github.com/user-attachments/assets/a796531e-5f22-4a58-9476-d99b5015a1b4" />
 </p>
@@ -33,22 +37,7 @@
 
 ---
 
-## 🚀 About
 
-**Simply Airdrops** is a lightweight and easy-to-use mod that does exactly what the name suggests — it adds **dynamic airdrop events** to your world.
-
-Airdrops are triggered automatically at set intervals or manually using a **radio controller**, creating engaging and repeatable gameplay moments.
-
-Each airdrop contains highly customisable loot crates:
-
-- 📦 Wooden Crate  
-- 🏥 Medical Crates  
-- 🔫 Ammo Box  
-- ⚔️ Weapon Case  
-
-Designed to be **fully configurable**, the mod integrates smoothly with other mods like TECZ and more.
-
----
 
 ## 📦 Downloads
 
