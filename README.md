@@ -45,6 +45,12 @@
 - **Minecraft Version:** 1.20.1  
 
 ---
+
+## 📦 Requirements
+
+- [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib) - Required for animated block models
+
+---
  
 <p align="center">
   <img width="800" height="80" alt="divider" src="https://github.com/user-attachments/assets/a796531e-5f22-4a58-9476-d99b5015a1b4" />
