@@ -75,7 +75,7 @@
 
 
 <p align="center" > 
-  <a href="#">
+  <a href="[#](https://modrinth.com/mod/simply-airdrops)">
     <img width="100" height="100" alt="Modrinth" src="https://github.com/user-attachments/assets/eb37f52b-d559-47a3-9c7c-eddc703686e9" />
   </a>
   &nbsp;&nbsp;&nbsp;
