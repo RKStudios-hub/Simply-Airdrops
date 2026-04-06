@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="524" height="121" alt="title" src="https://github.com/user-attachments/assets/e70ecdb4-6f44-433f-a472-8be6d4bda589" />
+  <img width="524" height="221" alt="title" src="https://github.com/user-attachments/assets/e70ecdb4-6f44-433f-a472-8be6d4bda589" />
 </h1>
 <p align="center">
   <img width="800" height="80" alt="divider" src="https://github.com/user-attachments/assets/a796531e-5f22-4a58-9476-d99b5015a1b4" />
