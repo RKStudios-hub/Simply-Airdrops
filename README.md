@@ -79,7 +79,7 @@
     <img width="100" height="100" alt="Modrinth" src="https://github.com/user-attachments/assets/eb37f52b-d559-47a3-9c7c-eddc703686e9" />
   </a>
   &nbsp;&nbsp;&nbsp;
-  <a href="#">
+  <a href="https://legacy.curseforge.com/minecraft/mc-mods/simply-airdrops" target="_blank">
     <img width="100" height="100" alt="CurseForge" src="https://github.com/user-attachments/assets/c05e09e6-574d-4340-a27d-191193b3cdb3" />
   </a>
 </p>
