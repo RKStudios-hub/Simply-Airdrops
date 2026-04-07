@@ -5,9 +5,10 @@ license = "All Rights Reserved"
 [[mods]]
 modId = "rks_airdrops"
 version = "${version}"
-displayName = "RK's simple Airdrops"
+displayName = "Simply Airdrops"
+logoFile = "logo.png"
 description = '''
-Adds a custom airdrop box with barrel-sized storage.
+Adds custom airdrop crates with animated storage for Simply Airdrops.
 '''
 
 [[dependencies.rks_airdrops]]

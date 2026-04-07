@@ -5,6 +5,8 @@ import com.rks.airdrop.block.AirdropBoxBlock;
 import com.rks.airdrop.block.AirdropBoxHelperBlock;
 import com.rks.airdrop.block.MedicCrateBlock;
 import com.rks.airdrop.block.MedicCrateHelperBlock;
+import com.rks.airdrop.block.WeaponCrateBlock;
+import com.rks.airdrop.block.WeaponCrateHelperBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -34,6 +36,16 @@ public final class ModBlocks {
     public static final RegistryObject<Block> MEDIC_CRATE_HELPER = BLOCKS.register(
             "medic_crate_helper",
             () -> new MedicCrateHelperBlock(BlockBehaviour.Properties.copy(Blocks.BARREL).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> WEAPON_CRATE = BLOCKS.register(
+            "weapon_crate",
+            () -> new WeaponCrateBlock(BlockBehaviour.Properties.copy(Blocks.BARREL).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> WEAPON_CRATE_HELPER = BLOCKS.register(
+            "weapon_crate_helper",
+            () -> new WeaponCrateHelperBlock(BlockBehaviour.Properties.copy(Blocks.BARREL).noOcclusion())
     );
 
     private ModBlocks() {

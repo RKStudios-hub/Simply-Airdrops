@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.rks.airdrop'
-version = '1.0.0'
+version = '0.0.2'
 
 base {
     archivesName = 'rks_simple_airdrops'

@@ -1,0 +1,9 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "rks_airdrops:block/weapon_crate_helper"
+      }
+    }
+  ]
+}
