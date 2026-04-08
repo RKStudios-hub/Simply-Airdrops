@@ -49,6 +49,10 @@
 ## 📦 Requirements
 
 - [GeckoLib](https://www.curseforge.com/minecraft/mc-mods/geckolib) - Required for animated block models
+  
+<p align="center">
+  <img width="400" alt="dipendence" src="https://raw.githubusercontent.com/RKStudios-hub/pixelart-assets/main/geckolib.png" />
+</p>
 
 ---
  
