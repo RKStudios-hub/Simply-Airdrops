@@ -33,7 +33,12 @@ public class RksAirdrops {
                 event.accept(ModItems.AIRDROP.get());
                 event.accept(ModItems.AIRDROP_BOX.get());
                 event.accept(ModItems.MEDIC_CRATE.get());
+                event.accept(ModItems.AMMO_CRATE.get());
                 event.accept(ModItems.WEAPON_CRATE.get());
+            }
+
+            if (event.getTabKey().equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
+                event.accept(ModItems.RADIO_CONTROLLER.get());
             }
         }
     }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "rks_airdrops:block/ammo_crate"
+    },
+    "facing=east": {
+      "model": "rks_airdrops:block/ammo_crate",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "rks_airdrops:block/ammo_crate",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "rks_airdrops:block/ammo_crate",
+      "y": 270
+    }
+  }
+}

@@ -2,6 +2,7 @@ package com.rks.airdrop.registry;
 
 import com.rks.airdrop.RksAirdrops;
 import com.rks.airdrop.blockentity.AirdropBoxBlockEntity;
+import com.rks.airdrop.blockentity.AmmoCrateBlockEntity;
 import com.rks.airdrop.blockentity.MedicCrateBlockEntity;
 import com.rks.airdrop.blockentity.WeaponCrateBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,6 +29,15 @@ public final class ModBlockEntities {
                     () -> BlockEntityType.Builder.of(
                             MedicCrateBlockEntity::new,
                             ModBlocks.MEDIC_CRATE.get()
+                    ).build(null)
+            );
+
+    public static final RegistryObject<BlockEntityType<AmmoCrateBlockEntity>> AMMO_CRATE =
+            BLOCK_ENTITIES.register(
+                    "ammo_crate",
+                    () -> BlockEntityType.Builder.of(
+                            AmmoCrateBlockEntity::new,
+                            ModBlocks.AMMO_CRATE.get()
                     ).build(null)
             );
 

@@ -17,11 +17,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class WeaponCrateHelperBlock extends Block {
-    public static final IntegerProperty OFFSET_X = IntegerProperty.create("offset_x", 0, 4);
-    public static final IntegerProperty OFFSET_Z = IntegerProperty.create("offset_z", 0, 4);
+public class AmmoCrateHelperBlock extends Block {
+    public static final IntegerProperty OFFSET_X = IntegerProperty.create("offset_x", 0, 2);
+    public static final IntegerProperty OFFSET_Z = IntegerProperty.create("offset_z", 0, 2);
 
-    public WeaponCrateHelperBlock(Properties properties) {
+    public AmmoCrateHelperBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any()
                 .setValue(OFFSET_X, 0)
@@ -40,19 +40,19 @@ public class WeaponCrateHelperBlock extends Block {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return WeaponCrateShapeCache.getDetailedShape(getFacing(level, state, pos),
+        return AmmoCrateShapeCache.getDetailedShape(getFacing(level, state, pos),
                 decodeOffset(state.getValue(OFFSET_X)), 0, decodeOffset(state.getValue(OFFSET_Z)));
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return WeaponCrateShapeCache.getDetailedShape(getFacing(level, state, pos),
+        return AmmoCrateShapeCache.getDetailedShape(getFacing(level, state, pos),
                 decodeOffset(state.getValue(OFFSET_X)), 0, decodeOffset(state.getValue(OFFSET_Z)));
     }
 
     @Override
     public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return WeaponCrateShapeCache.getDetailedShape(getFacing(level, state, pos),
+        return AmmoCrateShapeCache.getDetailedShape(getFacing(level, state, pos),
                 decodeOffset(state.getValue(OFFSET_X)), 0, decodeOffset(state.getValue(OFFSET_Z)));
     }
 
@@ -60,21 +60,21 @@ public class WeaponCrateHelperBlock extends Block {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockPos masterPos = getMasterPos(state, pos);
         BlockState masterState = level.getBlockState(masterPos);
-        if (!(masterState.getBlock() instanceof WeaponCrateBlock)) {
+        if (!(masterState.getBlock() instanceof AmmoCrateBlock)) {
             if (!level.isClientSide) {
                 level.removeBlock(pos, false);
             }
             return InteractionResult.PASS;
         }
 
-        return WeaponCrateBlock.openContainer(level, masterPos, player);
+        return AmmoCrateBlock.openContainer(level, masterPos, player);
     }
 
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
         BlockPos masterPos = getMasterPos(state, pos);
         BlockState masterState = level.getBlockState(masterPos);
-        if (masterState.getBlock() instanceof WeaponCrateBlock) {
+        if (masterState.getBlock() instanceof AmmoCrateBlock) {
             return Math.min(1.0F, masterState.getDestroyProgress(player, level, masterPos) * 1.5F);
         }
 
@@ -84,7 +84,7 @@ public class WeaponCrateHelperBlock extends Block {
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         BlockPos masterPos = getMasterPos(state, pos);
-        if (!masterPos.equals(pos) && level.getBlockState(masterPos).getBlock() instanceof WeaponCrateBlock) {
+        if (!masterPos.equals(pos) && level.getBlockState(masterPos).getBlock() instanceof AmmoCrateBlock) {
             level.destroyBlock(masterPos, !player.isCreative(), player);
         }
 
@@ -97,11 +97,11 @@ public class WeaponCrateHelperBlock extends Block {
     }
 
     public static int encodeOffset(int offset) {
-        return offset + 2;
+        return offset + 1;
     }
 
     private static int decodeOffset(int encodedOffset) {
-        return encodedOffset - 2;
+        return encodedOffset - 1;
     }
 
     private static BlockPos getMasterPos(BlockState state, BlockPos pos) {
@@ -110,8 +110,8 @@ public class WeaponCrateHelperBlock extends Block {
 
     private static Direction getFacing(BlockGetter level, BlockState state, BlockPos pos) {
         BlockState masterState = level.getBlockState(getMasterPos(state, pos));
-        if (masterState.getBlock() instanceof WeaponCrateBlock) {
-            return masterState.getValue(WeaponCrateBlock.FACING);
+        if (masterState.getBlock() instanceof AmmoCrateBlock) {
+            return masterState.getValue(AmmoCrateBlock.FACING);
         }
 
         return Direction.NORTH;

@@ -1,6 +1,6 @@
 package com.rks.airdrop.block;
 
-import com.rks.airdrop.blockentity.WeaponCrateBlockEntity;
+import com.rks.airdrop.blockentity.AmmoCrateBlockEntity;
 import com.rks.airdrop.registry.ModBlockEntities;
 import com.rks.airdrop.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -25,8 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -36,17 +34,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class WeaponCrateBlock extends BaseEntityBlock {
+public class AmmoCrateBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-    public WeaponCrateBlock(Properties properties) {
+
+    public AmmoCrateBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any()
-                .setValue(FACING, Direction.NORTH)
-                .setValue(OPEN, Boolean.FALSE));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -67,19 +62,17 @@ public class WeaponCrateBlock extends BaseEntityBlock {
             }
         }
 
-        return defaultBlockState()
-                .setValue(FACING, facing)
-                .setValue(OPEN, Boolean.FALSE);
+        return defaultBlockState().setValue(FACING, facing);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, OPEN);
+        builder.add(FACING);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new WeaponCrateBlockEntity(pos, state);
+        return new AmmoCrateBlockEntity(pos, state);
     }
 
     @Override
@@ -93,8 +86,8 @@ public class WeaponCrateBlock extends BaseEntityBlock {
         }
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof WeaponCrateBlockEntity weaponCrate && player instanceof ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, weaponCrate, pos);
+        if (blockEntity instanceof AmmoCrateBlockEntity ammoCrate && player instanceof ServerPlayer serverPlayer) {
+            NetworkHooks.openScreen(serverPlayer, ammoCrate, pos);
         }
 
         return InteractionResult.CONSUME;
@@ -110,13 +103,13 @@ public class WeaponCrateBlock extends BaseEntityBlock {
 
         for (int[] offset : getHelperOffsets(state.getValue(FACING))) {
             BlockPos helperPos = pos.offset(offset[0], 0, offset[2]);
-            level.setBlock(helperPos, ModBlocks.WEAPON_CRATE_HELPER.get().defaultBlockState()
-                    .setValue(WeaponCrateHelperBlock.OFFSET_X, WeaponCrateHelperBlock.encodeOffset(offset[0]))
-                    .setValue(WeaponCrateHelperBlock.OFFSET_Z, WeaponCrateHelperBlock.encodeOffset(offset[2])), 3);
+            level.setBlock(helperPos, ModBlocks.AMMO_CRATE_HELPER.get().defaultBlockState()
+                    .setValue(AmmoCrateHelperBlock.OFFSET_X, AmmoCrateHelperBlock.encodeOffset(offset[0]))
+                    .setValue(AmmoCrateHelperBlock.OFFSET_Z, AmmoCrateHelperBlock.encodeOffset(offset[2])), 3);
         }
 
-        if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof WeaponCrateBlockEntity weaponCrate) {
-            weaponCrate.setCustomName(stack.getHoverName());
+        if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof AmmoCrateBlockEntity ammoCrate) {
+            ammoCrate.setCustomName(stack.getHoverName());
         }
     }
 
@@ -127,7 +120,7 @@ public class WeaponCrateBlock extends BaseEntityBlock {
                 removeHelpers(level, pos);
             }
 
-            if (level.getBlockEntity(pos) instanceof WeaponCrateBlockEntity) {
+            if (level.getBlockEntity(pos) instanceof AmmoCrateBlockEntity) {
                 level.updateNeighbourForOutputSignal(pos, this);
             }
         }
@@ -143,43 +136,41 @@ public class WeaponCrateBlock extends BaseEntityBlock {
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        return blockEntity instanceof WeaponCrateBlockEntity weaponCrate
-                ? AbstractContainerMenu.getRedstoneSignalFromContainer(weaponCrate)
+        return blockEntity instanceof AmmoCrateBlockEntity ammoCrate
+                ? AbstractContainerMenu.getRedstoneSignalFromContainer(ammoCrate)
                 : 0;
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide
-                ? null
-                : createTickerHelper(blockEntityType, ModBlockEntities.WEAPON_CRATE.get(), WeaponCrateBlockEntity::recheckOpen);
+        return null;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return WeaponCrateShapeCache.getDetailedShape(state.getValue(FACING), 0, 0, 0);
+        return AmmoCrateShapeCache.getDetailedShape(state.getValue(FACING), 0, 0, 0);
     }
 
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return WeaponCrateShapeCache.getDetailedShape(state.getValue(FACING), 0, 0, 0);
+        return AmmoCrateShapeCache.getDetailedShape(state.getValue(FACING), 0, 0, 0);
     }
 
     @Override
     public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos) {
-        return WeaponCrateShapeCache.getDetailedShape(state.getValue(FACING), 0, 0, 0);
+        return AmmoCrateShapeCache.getDetailedShape(state.getValue(FACING), 0, 0, 0);
     }
 
     @Override
     public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
         BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (!(blockEntity instanceof WeaponCrateBlockEntity weaponCrate)) {
+        if (!(blockEntity instanceof AmmoCrateBlockEntity ammoCrate)) {
             return super.getDrops(state, builder);
         }
 
         ItemStack stack = new ItemStack(asItem());
-        CompoundTag blockEntityTag = weaponCrate.saveWithoutMetadata();
+        CompoundTag blockEntityTag = ammoCrate.saveWithoutMetadata();
         blockEntityTag.remove("id");
         blockEntityTag.remove("x");
         blockEntityTag.remove("y");
@@ -189,8 +180,8 @@ public class WeaponCrateBlock extends BaseEntityBlock {
             stack.addTagElement("BlockEntityTag", blockEntityTag);
         }
 
-        if (weaponCrate.hasCustomName()) {
-            stack.setHoverName(weaponCrate.getCustomName());
+        if (ammoCrate.hasCustomName()) {
+            stack.setHoverName(ammoCrate.getCustomName());
         }
 
         return List.of(stack);
@@ -198,10 +189,10 @@ public class WeaponCrateBlock extends BaseEntityBlock {
 
     private static void removeHelpers(Level level, BlockPos origin) {
         BlockState state = level.getBlockState(origin);
-        Direction facing = state.getBlock() instanceof WeaponCrateBlock ? state.getValue(FACING) : Direction.NORTH;
+        Direction facing = state.getBlock() instanceof AmmoCrateBlock ? state.getValue(FACING) : Direction.NORTH;
         for (int[] offset : getHelperOffsets(facing)) {
             BlockPos helperPos = origin.offset(offset[0], 0, offset[2]);
-            if (level.getBlockState(helperPos).getBlock() instanceof WeaponCrateHelperBlock) {
+            if (level.getBlockState(helperPos).getBlock() instanceof AmmoCrateHelperBlock) {
                 level.removeBlock(helperPos, false);
             }
         }
@@ -209,22 +200,10 @@ public class WeaponCrateBlock extends BaseEntityBlock {
 
     private static int[][] getHelperOffsets(Direction facing) {
         return switch (facing) {
-            case EAST -> new int[][]{
-                    {0, 0, -2}, {0, 0, -1}, {0, 0, 1},
-                    {1, 0, -2}, {1, 0, -1}, {1, 0, 0}, {1, 0, 1}
-            };
-            case SOUTH -> new int[][]{
-                    {-1, 0, 0}, {-1, 0, 1}, {0, 0, 1},
-                    {1, 0, 0}, {1, 0, 1}, {2, 0, 0}, {2, 0, 1}
-            };
-            case WEST -> new int[][]{
-                    {-1, 0, -1}, {-1, 0, 0}, {-1, 0, 1}, {-1, 0, 2},
-                    {0, 0, -1}, {0, 0, 1}, {0, 0, 2}
-            };
-            default -> new int[][]{
-                    {-2, 0, -1}, {-2, 0, 0}, {-1, 0, -1}, {-1, 0, 0},
-                    {0, 0, -1}, {1, 0, -1}, {1, 0, 0}
-            };
+            case EAST -> new int[][]{{0, 0, -1}, {1, 0, -1}, {1, 0, 0}};
+            case SOUTH -> new int[][]{{0, 0, 1}, {1, 0, 0}, {1, 0, 1}};
+            case WEST -> new int[][]{{-1, 0, 0}, {-1, 0, 1}, {0, 0, 1}};
+            default -> new int[][]{{-1, 0, -1}, {-1, 0, 0}, {0, 0, -1}};
         };
     }
 }

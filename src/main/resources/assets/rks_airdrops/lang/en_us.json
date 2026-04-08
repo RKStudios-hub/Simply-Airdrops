@@ -4,7 +4,10 @@
   "item.rks_airdrops.airdrop_box": "Wooden Crate",
   "block.rks_airdrops.medic_crate": "Medic Crate",
   "item.rks_airdrops.medic_crate": "Medic Crate",
-  "block.rks_airdrops.weapon_crate": "Weapon_crate",
-  "item.rks_airdrops.weapon_crate": "Weapon_crate",
+  "block.rks_airdrops.ammo_crate": "Ammo Crate",
+  "item.rks_airdrops.ammo_crate": "Ammo Crate",
+  "block.rks_airdrops.weapon_crate": "Weapon Crate",
+  "item.rks_airdrops.weapon_crate": "Weapon Crate",
+  "item.rks_airdrops.radio_controller": "Radio Controller",
   "entity.rks_airdrops.airdrop": "Airdrop"
 }

@@ -3,6 +3,7 @@ package com.rks.airdrop.client;
 import com.rks.airdrop.RksAirdrops;
 import com.rks.airdrop.client.renderer.AirdropBoxRenderer;
 import com.rks.airdrop.client.renderer.AirdropEntityRenderer;
+import com.rks.airdrop.client.renderer.AmmoCrateRenderer;
 import com.rks.airdrop.client.renderer.MedicCrateRenderer;
 import com.rks.airdrop.client.renderer.WeaponCrateRenderer;
 import com.rks.airdrop.registry.ModBlockEntities;
@@ -22,6 +23,7 @@ public final class AirdropClientEvents {
         event.registerEntityRenderer(ModEntities.AIRDROP.get(), AirdropEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.AIRDROP_BOX.get(), AirdropBoxRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MEDIC_CRATE.get(), MedicCrateRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.AMMO_CRATE.get(), AmmoCrateRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.WEAPON_CRATE.get(), WeaponCrateRenderer::new);
     }
 }

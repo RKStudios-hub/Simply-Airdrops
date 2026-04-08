@@ -15,7 +15,7 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<AirdropEntity>> AIRDROP = ENTITY_TYPES.register(
             "airdrop",
             () -> EntityType.Builder.<AirdropEntity>of(AirdropEntity::new, MobCategory.MISC)
-                    .sized(2.75F, 3.5F)
+                    .sized(2.4F, 4.5F)
                     .clientTrackingRange(10)
                     .updateInterval(1)
                     .build("airdrop")
