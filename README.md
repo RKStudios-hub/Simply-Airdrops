@@ -62,7 +62,7 @@
 
 <!-- SOCIALS -->
 <p align="center">
-  <a href="#"><img src="https://github.com/user-attachments/assets/3d4e037e-2e65-4f5d-ab71-8a46ba8a60a7" width="60" height="60" alt="Discord"/></a>
+  <a href="https://discord.gg/VrcVft4GEf"><img src="https://github.com/user-attachments/assets/3d4e037e-2e65-4f5d-ab71-8a46ba8a60a7" width="60" height="60" alt="Discord"/></a>
   &nbsp;&nbsp;&nbsp;
   <a href="#"><img src="https://github.com/user-attachments/assets/2d3adbcc-01ce-4c01-82ef-82c628cbc20f" width="60" height="60" alt="Twitter"/></a>
   &nbsp;&nbsp;&nbsp;
