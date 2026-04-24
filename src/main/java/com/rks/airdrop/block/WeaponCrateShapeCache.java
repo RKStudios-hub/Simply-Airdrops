@@ -5,8 +5,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 final class WeaponCrateShapeCache {
@@ -35,6 +37,26 @@ final class WeaponCrateShapeCache {
                 unused -> buildSolidShape(facing, offsetX, offsetY, offsetZ));
     }
 
+    static int[][] getOccupiedOffsets(Direction facing) {
+        List<int[]> offsets = new ArrayList<>();
+        for (int x = -2; x <= 2; x++) {
+            for (int z = -2; z <= 2; z++) {
+                if (x == 0 && z == 0) {
+                    continue;
+                }
+
+                Bounds cell = new Bounds(x * 16, 0, z * 16, x * 16 + 16, 16, z * 16 + 16);
+                for (ShapeBox box : MODEL_BOXES) {
+                    if (intersect(rotateForFacing(translateToBlockSpace(box.rotatedBounds()), facing), cell) != null) {
+                        offsets.add(new int[]{x, 0, z});
+                        break;
+                    }
+                }
+            }
+        }
+        return offsets.toArray(new int[0][]);
+    }
+
     private static String key(Direction facing, int offsetX, int offsetY, int offsetZ) {
         return facing.getName() + ":" + offsetX + ":" + offsetY + ":" + offsetZ;
     }
@@ -45,7 +67,7 @@ final class WeaponCrateShapeCache {
         VoxelShape shape = Shapes.empty();
 
         for (ShapeBox box : MODEL_BOXES) {
-            Bounds worldBounds = rotateForFacing(box.rotatedBounds(), facing);
+            Bounds worldBounds = rotateForFacing(translateToBlockSpace(box.rotatedBounds()), facing);
             Bounds intersection = intersect(worldBounds, cell);
             if (intersection != null) {
                 shape = Shapes.or(shape, Block.box(
@@ -85,12 +107,23 @@ final class WeaponCrateShapeCache {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             Bounds combined = null;
             for (ShapeBox box : MODEL_BOXES) {
-                Bounds rotated = rotateForFacing(box.rotatedBounds(), direction);
+                Bounds rotated = rotateForFacing(translateToBlockSpace(box.rotatedBounds()), direction);
                 combined = combined == null ? rotated : union(combined, rotated);
             }
             bounds.put(direction, combined);
         }
         return bounds;
+    }
+
+    private static Bounds translateToBlockSpace(Bounds bounds) {
+        return new Bounds(
+                bounds.minX + 8.0D,
+                bounds.minY,
+                bounds.minZ + 8.0D,
+                bounds.maxX + 8.0D,
+                bounds.maxY,
+                bounds.maxZ + 8.0D
+        );
     }
 
     private static Bounds rotateForFacing(Bounds bounds, Direction facing) {

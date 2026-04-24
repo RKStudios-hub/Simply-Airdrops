@@ -3,6 +3,8 @@ package com.rks.airdrop.registry;
 import com.rks.airdrop.RksAirdrops;
 import com.rks.airdrop.block.AirdropBoxBlock;
 import com.rks.airdrop.block.AirdropBoxHelperBlock;
+import com.rks.airdrop.block.AmmoCrateBlock;
+import com.rks.airdrop.block.AmmoCrateHelperBlock;
 import com.rks.airdrop.block.MedicCrateBlock;
 import com.rks.airdrop.block.MedicCrateHelperBlock;
 import com.rks.airdrop.block.WeaponCrateBlock;
@@ -36,6 +38,16 @@ public final class ModBlocks {
     public static final RegistryObject<Block> MEDIC_CRATE_HELPER = BLOCKS.register(
             "medic_crate_helper",
             () -> new MedicCrateHelperBlock(BlockBehaviour.Properties.copy(Blocks.BARREL).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> AMMO_CRATE = BLOCKS.register(
+            "ammo_crate",
+            () -> new AmmoCrateBlock(BlockBehaviour.Properties.copy(Blocks.BARREL).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> AMMO_CRATE_HELPER = BLOCKS.register(
+            "ammo_crate_helper",
+            () -> new AmmoCrateHelperBlock(BlockBehaviour.Properties.copy(Blocks.BARREL).noOcclusion())
     );
 
     public static final RegistryObject<Block> WEAPON_CRATE = BLOCKS.register(

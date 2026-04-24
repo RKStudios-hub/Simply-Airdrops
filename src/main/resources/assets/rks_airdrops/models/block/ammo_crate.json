@@ -1,0 +1,11 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "minecraft:block/green_wool"
+  },
+  "texture_size": [
+    256,
+    256
+  ]
+}

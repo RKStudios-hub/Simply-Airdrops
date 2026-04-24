@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.rks.airdrop'
-version = '1.0.2'
+version = '1.0.5'
 
 base {
     archivesName = 'rks_simple_airdrops'
@@ -51,8 +51,13 @@ repositories {
 }
 
 dependencies {
+    def debugModsDir = new File(System.getenv('APPDATA'), '.minecraft\\modpacks\\debug\\mods')
+    def clothConfigJar = new File(debugModsDir, 'cloth-config-11.1.136-forge.jar')
+
     minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.4.9')
+    compileOnly files(clothConfigJar)
+    runtimeOnly files(clothConfigJar)
 }
 
 tasks.withType(JavaCompile).configureEach {

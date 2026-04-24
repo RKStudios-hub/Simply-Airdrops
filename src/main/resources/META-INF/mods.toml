@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-license = "All Rights Reserved"
+license = "GNU General Public License v3.0"
 
 [[mods]]
 modId = "rks_airdrops"
@@ -24,3 +24,10 @@ mandatory = true
 versionRange = "[1.20.1,1.21)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.rks_airdrops]]
+modId = "cloth_config"
+mandatory = false
+versionRange = "[11.1,)"
+ordering = "NONE"
+side = "CLIENT"
