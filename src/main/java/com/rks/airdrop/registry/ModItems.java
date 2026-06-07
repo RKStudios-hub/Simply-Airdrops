@@ -4,6 +4,7 @@ import com.rks.airdrop.RksAirdrops;
 import com.rks.airdrop.item.AirdropBoxItem;
 import com.rks.airdrop.item.AirdropItem;
 import com.rks.airdrop.item.AmmoCrateItem;
+import com.rks.airdrop.item.FlareGunItem;
 import com.rks.airdrop.item.MedicCrateItem;
 import com.rks.airdrop.item.RadioControllerItem;
 import com.rks.airdrop.item.WeaponCrateItem;
@@ -44,6 +45,11 @@ public final class ModItems {
     public static final RegistryObject<Item> RADIO_CONTROLLER = ITEMS.register(
             "radio_controller",
             () -> new RadioControllerItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> FLARE_GUN = ITEMS.register(
+            "flare_gun",
+            () -> new FlareGunItem(new Item.Properties().stacksTo(1).durability(64))
     );
 
     private ModItems() {

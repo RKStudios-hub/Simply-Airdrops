@@ -86,6 +86,7 @@ public final class CrateLootManager {
         List<LootEntry> available = entries.stream()
                 .filter(entry -> resolveItem(entry.name) != null)
                 .filter(entry -> entry.weight > 0)
+                .filter(entry -> !isKnownBuggyLoot(entry))
                 .toList();
 
         if (available.isEmpty()) {
@@ -103,6 +104,10 @@ public final class CrateLootManager {
         }
 
         return ItemStack.EMPTY;
+    }
+
+    private static boolean isKnownBuggyLoot(LootEntry entry) {
+        return "tacz:attachment".equals(entry.name);
     }
 
     private static ItemStack createStack(LootEntry entry, RandomSource random) {
@@ -263,12 +268,12 @@ public final class CrateLootManager {
                         entry("minecraft:arrow", 8, 8, 24)
                 ),
                 pool(2,
-                        entry("tacz:attachment", 8, 1, 1, "{AttachmentId:\"tacz:silencer_light\"}"),
-                        entry("tacz:attachment", 8, 1, 1, "{AttachmentId:\"tacz:reflex_sight\"}"),
-                        entry("tacz:attachment", 6, 1, 1, "{AttachmentId:\"tacz:light_stock\"}"),
-                        entry("tacz:attachment", 6, 1, 1, "{AttachmentId:\"tacz:vertical_grip\"}"),
-                        entry("minecraft:spyglass", 2, 1, 1),
-                        entry("minecraft:shield", 2, 1, 1)
+                        entry("minecraft:crossbow", 6, 1, 1),
+                        entry("minecraft:bow", 6, 1, 1),
+                        entry("minecraft:shield", 5, 1, 1),
+                        entry("minecraft:spyglass", 4, 1, 1),
+                        entry("minecraft:arrow", 8, 8, 24),
+                        entry("minecraft:spectral_arrow", 3, 4, 12)
                 )
         );
     }

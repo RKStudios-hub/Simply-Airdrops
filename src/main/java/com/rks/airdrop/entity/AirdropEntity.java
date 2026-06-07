@@ -181,10 +181,11 @@ public class AirdropEntity extends Entity implements GeoEntity {
         double baseY = getY() + (isDescending() ? 1.0D : 0.8D);
         double baseZ = getZ();
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 18; i++) {
             double offsetX = (random.nextDouble() - 0.5D) * 0.8D;
+            double offsetY = random.nextDouble() * 3.0D;
             double offsetZ = (random.nextDouble() - 0.5D) * 0.8D;
-            serverLevel.sendParticles(FLARE_PARTICLE, baseX + offsetX, baseY, baseZ + offsetZ, 1, 0.0D, 0.3D, 0.0D, 0.02D);
+            serverLevel.sendParticles(FLARE_PARTICLE, baseX + offsetX, baseY + offsetY, baseZ + offsetZ, 1, 0.0D, 0.3D, 0.0D, 0.02D);
         }
     }
 

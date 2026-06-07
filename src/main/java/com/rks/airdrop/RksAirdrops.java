@@ -7,7 +7,9 @@ import com.rks.airdrop.registry.ModBlockEntities;
 import com.rks.airdrop.registry.ModBlocks;
 import com.rks.airdrop.registry.ModEntities;
 import com.rks.airdrop.registry.ModItems;
-import com.rks.airdrop.registry.ModRecipeSerializers;
+import com.rks.airdrop.registry.ModLootModifiers;
+import com.rks.airdrop.registry.ModSounds;
+import com.rks.airdrop.recipe.RadioControllerCraftableCondition;
 import com.rks.airdrop.world.AirdropSpawner;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -28,6 +30,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import software.bernie.geckolib.GeckoLib;
 
 import java.util.HashMap;
@@ -45,12 +48,14 @@ public class RksAirdrops {
         AirdropSettings.load();
         CrateLootManager.ensureDefaults();
         GeckoLib.initialize();
+        CraftingHelper.register(new RadioControllerCraftableCondition.Serializer());
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
-        ModRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        ModSounds.SOUND_EVENTS.register(modEventBus);
+        ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             if (ModList.get().isLoaded("cloth_config")) {
                 ModLoadingContext.get().registerExtensionPoint(
@@ -159,6 +164,7 @@ public class RksAirdrops {
 
             if (event.getTabKey().equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
                 event.accept(ModItems.RADIO_CONTROLLER.get());
+                event.accept(ModItems.FLARE_GUN.get());
             }
         }
     }
