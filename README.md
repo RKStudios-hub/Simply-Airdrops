@@ -68,7 +68,7 @@
   &nbsp;&nbsp;&nbsp;
   <a href="#"><img src="https://github.com/user-attachments/assets/cf2a5174-83ae-4f22-9015-3ec21263d550" width="60" height="60" alt="Like"/></a>
   &nbsp;&nbsp;&nbsp;
-  <a href="#"><img src="https://github.com/user-attachments/assets/8d846e2a-e4b4-4502-ab7f-3ab2590e1e32" width="60" height="60" alt="YouTube"/></a>
+  <a href="https://www.youtube.com/@Someone_random331"><img src="https://github.com/user-attachments/assets/8d846e2a-e4b4-4502-ab7f-3ab2590e1e32" width="60" height="60" alt="YouTube"/></a>
   &nbsp;&nbsp;&nbsp;
   <a href="#"><img src="https://github.com/user-attachments/assets/2d416633-6809-4f5f-85cd-bb17d4ddf0f0" width="60" height="60" alt="Donate"/></a>
 </p>
