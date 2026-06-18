@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[4,)"
 license = "GNU General Public License v3.0"
 
 [[mods]]
@@ -12,22 +12,22 @@ Adds custom airdrop crates with animated storage for Simply Airdrops.
 '''
 
 [[dependencies.rks_airdrops]]
-modId = "forge"
-mandatory = true
-versionRange = "[47,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.rks_airdrops]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.1,1.21)"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.rks_airdrops]]
 modId = "cloth_config"
-mandatory = false
-versionRange = "[11.1,)"
+type = "optional"
+versionRange = "[15.0,)"
 ordering = "NONE"
 side = "CLIENT"

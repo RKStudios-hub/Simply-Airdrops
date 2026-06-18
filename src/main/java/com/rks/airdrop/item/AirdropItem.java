@@ -55,3 +55,6 @@ public class AirdropItem extends Item {
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 }
+
+
+

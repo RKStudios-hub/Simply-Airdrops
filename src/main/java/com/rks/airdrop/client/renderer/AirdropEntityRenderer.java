@@ -11,3 +11,6 @@ public class AirdropEntityRenderer extends GeoEntityRenderer<AirdropEntity> {
         this.shadowRadius = 0.8F;
     }
 }
+
+
+

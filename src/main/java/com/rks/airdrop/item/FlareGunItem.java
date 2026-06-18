@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -63,7 +64,7 @@ public class FlareGunItem extends Item {
 
             player.getCooldowns().addCooldown(this, COOLDOWN_TICKS);
             if (!player.getAbilities().instabuild) {
-                stack.hurtAndBreak(1, player, brokenPlayer -> brokenPlayer.broadcastBreakEvent(hand));
+                stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
             }
         }
 
@@ -89,3 +90,7 @@ public class FlareGunItem extends Item {
         level.sendParticles(FLARE_PARTICLE, end.x, end.y, end.z, 60, 1.2D, 1.2D, 1.2D, 0.04D);
     }
 }
+
+
+
+

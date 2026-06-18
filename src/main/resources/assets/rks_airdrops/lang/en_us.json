@@ -16,6 +16,7 @@
   "config.rks_airdrops.airdrops_enabled": "Enable timed airdrops",
   "config.rks_airdrops.airdrop_interval_seconds": "Airdrop interval (seconds)",
   "config.rks_airdrops.airdrop_spawn_height": "Airdrop spawn height",
+  "config.rks_airdrops.airdrop_fall_speed": "Airdrop fall speed (blocks/sec)",
   "config.rks_airdrops.radio_controller_consumed": "Consume Radio Controller on use",
   "config.rks_airdrops.radio_controller_craftable": "Radio Controller craftable",
   "message.rks_airdrops.timed_airdrop": "A timed airdrop is incoming at",

@@ -10,3 +10,6 @@ public class AirdropBoxRenderer extends GeoBlockRenderer<AirdropBoxBlockEntity> 
         super(new AirdropBoxModel());
     }
 }
+
+
+

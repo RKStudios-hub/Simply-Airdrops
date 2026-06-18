@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
 public class WeaponCrateModel extends GeoModel<WeaponCrateBlockEntity> {
-    private static final ResourceLocation MODEL = new ResourceLocation(RksAirdrops.MODID, "geo/weapon_crate.geo.json");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(RksAirdrops.MODID, "textures/block/weapon_crate.png");
-    private static final ResourceLocation ANIMATION = new ResourceLocation(RksAirdrops.MODID, "animations/weapon_crate.animation.json");
+    private static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "geo/weapon_crate.geo.json");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "textures/block/weapon_crate.png");
+    private static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "animations/weapon_crate.animation.json");
 
     @Override
     public ResourceLocation getModelResource(WeaponCrateBlockEntity animatable) {
@@ -25,3 +25,6 @@ public class WeaponCrateModel extends GeoModel<WeaponCrateBlockEntity> {
         return ANIMATION;
     }
 }
+
+
+
