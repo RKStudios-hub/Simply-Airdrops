@@ -9,3 +9,6 @@ public class RadioControllerItemRenderer extends GeoItemRenderer<RadioController
         super(new RadioControllerItemModel());
     }
 }
+
+
+

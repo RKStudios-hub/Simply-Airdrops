@@ -9,13 +9,16 @@
   "block.rks_airdrops.weapon_crate": "Weapon Crate",
   "item.rks_airdrops.weapon_crate": "Weapon Crate",
   "item.rks_airdrops.radio_controller": "Radio Controller",
+  "item.rks_airdrops.flare_gun": "Flare Gun",
   "entity.rks_airdrops.airdrop": "Airdrop",
   "config.rks_airdrops.title": "Simply Airdrops Settings",
   "config.rks_airdrops.category.general": "General",
   "config.rks_airdrops.airdrops_enabled": "Enable timed airdrops",
   "config.rks_airdrops.airdrop_interval_seconds": "Airdrop interval (seconds)",
-  "config.rks_airdrops.radio_controller_craftable": "Radio Controller craftable"
-,
+  "config.rks_airdrops.airdrop_spawn_height": "Airdrop spawn height",
+  "config.rks_airdrops.airdrop_fall_speed": "Airdrop fall speed (blocks/sec)",
+  "config.rks_airdrops.radio_controller_consumed": "Consume Radio Controller on use",
+  "config.rks_airdrops.radio_controller_craftable": "Radio Controller craftable",
   "message.rks_airdrops.timed_airdrop": "A timed airdrop is incoming at",
   "message.rks_airdrops.prefix": "[Simply Airdrops]"
 }

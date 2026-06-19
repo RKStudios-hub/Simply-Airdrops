@@ -10,3 +10,6 @@ public class MedicCrateRenderer extends GeoBlockRenderer<MedicCrateBlockEntity> 
         super(new MedicCrateModel());
     }
 }
+
+
+

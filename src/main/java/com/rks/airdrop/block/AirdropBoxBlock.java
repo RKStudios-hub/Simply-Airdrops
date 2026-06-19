@@ -3,8 +3,10 @@ package com.rks.airdrop.block;
 import com.rks.airdrop.blockentity.AirdropBoxBlockEntity;
 import com.rks.airdrop.registry.ModBlockEntities;
 import com.rks.airdrop.registry.ModBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -27,19 +29,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class AirdropBoxBlock extends BaseEntityBlock {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final MapCodec<AirdropBoxBlock> CODEC = simpleCodec(AirdropBoxBlock::new);
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     private static final int[][] HELPER_OFFSETS = createHelperOffsets();
 
@@ -51,8 +54,13 @@ public class AirdropBoxBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return RenderShape.INVISIBLE;
     }
 
     @Override
@@ -83,7 +91,7 @@ public class AirdropBoxBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         return openContainer(level, pos, player);
     }
 
@@ -94,10 +102,10 @@ public class AirdropBoxBlock extends BaseEntityBlock {
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof AirdropBoxBlockEntity airdropBox && player instanceof ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, airdropBox, pos);
+            serverPlayer.openMenu(airdropBox, pos);
         }
 
-        return InteractionResult.CONSUME;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -108,16 +116,19 @@ public class AirdropBoxBlock extends BaseEntityBlock {
             return;
         }
 
-        for (int[] offset : HELPER_OFFSETS) {
+                BlockEntity blockEntity = level.getBlockEntity(pos);
+        CustomData blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (blockEntity != null && blockEntityData != null) {
+            blockEntityData.loadInto(blockEntity, level.registryAccess());
+            blockEntity.setChanged();
+        }
+
+for (int[] offset : HELPER_OFFSETS) {
             BlockPos helperPos = pos.offset(offset[0], offset[1], offset[2]);
             level.setBlock(helperPos, ModBlocks.AIRDROP_BOX_HELPER.get().defaultBlockState()
                     .setValue(AirdropBoxHelperBlock.OFFSET_X, AirdropBoxHelperBlock.encodeOffset(offset[0]))
                     .setValue(AirdropBoxHelperBlock.OFFSET_Y, offset[1])
                     .setValue(AirdropBoxHelperBlock.OFFSET_Z, AirdropBoxHelperBlock.encodeOffset(offset[2])), 3);
-        }
-
-        if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof AirdropBoxBlockEntity airdropBox) {
-            airdropBox.setCustomName(stack.getHoverName());
         }
     }
 
@@ -181,18 +192,18 @@ public class AirdropBoxBlock extends BaseEntityBlock {
         }
 
         ItemStack stack = new ItemStack(asItem());
-        CompoundTag blockEntityTag = airdropBox.saveWithoutMetadata();
-        blockEntityTag.remove("id");
+        CompoundTag blockEntityTag = airdropBox.saveWithoutMetadata(builder.getLevel().registryAccess());
+        blockEntityTag.putString("id", "rks_airdrops:airdrop_box");
         blockEntityTag.remove("x");
         blockEntityTag.remove("y");
         blockEntityTag.remove("z");
 
         if (!blockEntityTag.isEmpty()) {
-            stack.addTagElement("BlockEntityTag", blockEntityTag);
+            stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntityTag));
         }
 
         if (airdropBox.hasCustomName()) {
-            stack.setHoverName(airdropBox.getCustomName());
+            stack.set(DataComponents.CUSTOM_NAME, airdropBox.getCustomName());
         }
 
         return List.of(stack);
@@ -225,3 +236,8 @@ public class AirdropBoxBlock extends BaseEntityBlock {
         return offsets;
     }
 }
+
+
+
+
+

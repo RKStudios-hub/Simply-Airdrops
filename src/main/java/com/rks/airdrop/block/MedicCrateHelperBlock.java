@@ -57,7 +57,7 @@ public class MedicCrateHelperBlock extends Block {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         BlockPos masterPos = getMasterPos(state, pos);
         BlockState masterState = level.getBlockState(masterPos);
         if (!(masterState.getBlock() instanceof MedicCrateBlock)) {
@@ -82,13 +82,13 @@ public class MedicCrateHelperBlock extends Block {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         BlockPos masterPos = getMasterPos(state, pos);
         if (!masterPos.equals(pos) && level.getBlockState(masterPos).getBlock() instanceof MedicCrateBlock) {
             level.destroyBlock(masterPos, !player.isCreative(), player);
         }
 
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
@@ -117,3 +117,6 @@ public class MedicCrateHelperBlock extends Block {
         return Direction.NORTH;
     }
 }
+
+
+

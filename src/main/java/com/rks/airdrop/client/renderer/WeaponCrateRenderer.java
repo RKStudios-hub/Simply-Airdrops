@@ -10,3 +10,6 @@ public class WeaponCrateRenderer extends GeoBlockRenderer<WeaponCrateBlockEntity
         super(new WeaponCrateModel());
     }
 }
+
+
+

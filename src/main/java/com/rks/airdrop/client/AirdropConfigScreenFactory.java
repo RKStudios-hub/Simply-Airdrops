@@ -37,6 +37,31 @@ public final class AirdropConfigScreenFactory {
                 .setSaveConsumer(AirdropSettings::setAirdropIntervalSeconds)
                 .build());
 
+        general.addEntry(entries.startIntField(
+                        Component.translatable("config.rks_airdrops.airdrop_spawn_height"),
+                        AirdropSettings.airdropSpawnHeight())
+                .setDefaultValue(192)
+                .setMin(96)
+                .setMax(384)
+                .setSaveConsumer(AirdropSettings::setAirdropSpawnHeight)
+                .build());
+
+        general.addEntry(entries.startDoubleField(
+                        Component.translatable("config.rks_airdrops.airdrop_fall_speed"),
+                        AirdropSettings.airdropFallSpeedBlocksPerSecond())
+                .setDefaultValue(3.0D)
+                .setMin(0.5D)
+                .setMax(20.0D)
+                .setSaveConsumer(AirdropSettings::setAirdropFallSpeedBlocksPerSecond)
+                .build());
+
+        general.addEntry(entries.startBooleanToggle(
+                        Component.translatable("config.rks_airdrops.radio_controller_consumed"),
+                        AirdropSettings.radioControllerConsumed())
+                .setDefaultValue(true)
+                .setSaveConsumer(AirdropSettings::setRadioControllerConsumed)
+                .build());
+
         general.addEntry(entries.startBooleanToggle(
                         Component.translatable("config.rks_airdrops.radio_controller_craftable"),
                         AirdropSettings.radioControllerCraftable())
@@ -47,3 +72,6 @@ public final class AirdropConfigScreenFactory {
         return builder.build();
     }
 }
+
+
+

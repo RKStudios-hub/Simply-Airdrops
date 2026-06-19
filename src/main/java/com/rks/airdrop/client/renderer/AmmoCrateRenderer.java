@@ -10,3 +10,6 @@ public class AmmoCrateRenderer extends GeoBlockRenderer<AmmoCrateBlockEntity> {
         super(new AmmoCrateModel());
     }
 }
+
+
+

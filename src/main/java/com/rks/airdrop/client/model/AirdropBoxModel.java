@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
 public class AirdropBoxModel extends GeoModel<AirdropBoxBlockEntity> {
-    private static final ResourceLocation MODEL = new ResourceLocation(RksAirdrops.MODID, "geo/airdrop_box.geo.json");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(RksAirdrops.MODID, "textures/block/airdrop_box.png");
-    private static final ResourceLocation ANIMATION = new ResourceLocation(RksAirdrops.MODID, "animations/airdrop_box.animation.json");
+    private static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "geo/airdrop_box.geo.json");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "textures/block/airdrop_box.png");
+    private static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "animations/airdrop_box.animation.json");
 
     @Override
     public ResourceLocation getModelResource(AirdropBoxBlockEntity animatable) {
@@ -25,3 +25,6 @@ public class AirdropBoxModel extends GeoModel<AirdropBoxBlockEntity> {
         return ANIMATION;
     }
 }
+
+
+

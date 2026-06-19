@@ -4,8 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.rks.airdrop.registry.ModItems;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +16,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.component.CustomData;
+import net.neoforged.fml.loading.FMLPaths;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -38,23 +46,23 @@ public final class CrateLootManager {
         writeIfMissing("weapon_crate.json", defaultsWeapon());
     }
 
-    public static ItemStack createWoodenCrate(RandomSource random) {
-        return fillCrate(new ItemStack(ModItems.AIRDROP_BOX.get()), 27, "wooden_crate.json", random);
+    public static ItemStack createWoodenCrate(RandomSource random, HolderLookup.Provider registries) {
+        return fillCrate(new ItemStack(ModItems.AIRDROP_BOX.get()), 27, "wooden_crate.json", "rks_airdrops:airdrop_box", random, registries);
     }
 
-    public static ItemStack createMedicCrate(RandomSource random) {
-        return fillCrate(new ItemStack(ModItems.MEDIC_CRATE.get()), 9, "medic_crate.json", random);
+    public static ItemStack createMedicCrate(RandomSource random, HolderLookup.Provider registries) {
+        return fillCrate(new ItemStack(ModItems.MEDIC_CRATE.get()), 9, "medic_crate.json", "rks_airdrops:medic_crate", random, registries);
     }
 
-    public static ItemStack createAmmoCrate(RandomSource random) {
-        return fillCrate(new ItemStack(ModItems.AMMO_CRATE.get()), 18, "ammo_crate.json", random);
+    public static ItemStack createAmmoCrate(RandomSource random, HolderLookup.Provider registries) {
+        return fillCrate(new ItemStack(ModItems.AMMO_CRATE.get()), 18, "ammo_crate.json", "rks_airdrops:ammo_crate", random, registries);
     }
 
-    public static ItemStack createWeaponCrate(RandomSource random) {
-        return fillCrate(new ItemStack(ModItems.WEAPON_CRATE.get()), 9, "weapon_crate.json", random);
+    public static ItemStack createWeaponCrate(RandomSource random, HolderLookup.Provider registries) {
+        return fillCrate(new ItemStack(ModItems.WEAPON_CRATE.get()), 9, "weapon_crate.json", "rks_airdrops:weapon_crate", random, registries);
     }
 
-    private static ItemStack fillCrate(ItemStack crateStack, int size, String fileName, RandomSource random) {
+    private static ItemStack fillCrate(ItemStack crateStack, int size, String fileName, String blockEntityId, RandomSource random, HolderLookup.Provider registries) {
         LootFile lootFile = readLootFile(fileName);
         NonNullList<ItemStack> contents = NonNullList.withSize(size, ItemStack.EMPTY);
         List<Integer> slots = new ArrayList<>();
@@ -77,8 +85,9 @@ public final class CrateLootManager {
         }
 
         CompoundTag blockEntityTag = new CompoundTag();
-        ContainerHelper.saveAllItems(blockEntityTag, contents);
-        crateStack.addTagElement("BlockEntityTag", blockEntityTag);
+        blockEntityTag.putString("id", blockEntityId);
+        ContainerHelper.saveAllItems(blockEntityTag, contents, registries);
+        crateStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntityTag));
         return crateStack;
     }
 
@@ -86,6 +95,7 @@ public final class CrateLootManager {
         List<LootEntry> available = entries.stream()
                 .filter(entry -> resolveItem(entry.name) != null)
                 .filter(entry -> entry.weight > 0)
+                .filter(entry -> !isKnownBuggyLoot(entry))
                 .toList();
 
         if (available.isEmpty()) {
@@ -105,6 +115,10 @@ public final class CrateLootManager {
         return ItemStack.EMPTY;
     }
 
+    private static boolean isKnownBuggyLoot(LootEntry entry) {
+        return "tacz:attachment".equals(entry.name);
+    }
+
     private static ItemStack createStack(LootEntry entry, RandomSource random) {
         Item item = resolveItem(entry.name);
         if (item == null) {
@@ -113,9 +127,14 @@ public final class CrateLootManager {
 
         ItemStack stack = new ItemStack(item);
         if (entry.nbt != null && !entry.nbt.isBlank()) {
-            try {
-                stack.setTag(TagParser.parseTag(entry.nbt));
-            } catch (Exception ignored) {
+            Holder<Potion> potion = parsePotion(entry.nbt);
+            if (potion != null && (item == Items.POTION || item == Items.SPLASH_POTION || item == Items.LINGERING_POTION)) {
+                stack.set(DataComponents.POTION_CONTENTS, new PotionContents(potion));
+            } else {
+                try {
+                    stack.set(DataComponents.CUSTOM_DATA, CustomData.of(TagParser.parseTag(entry.nbt)));
+                } catch (Exception ignored) {
+                }
             }
         }
 
@@ -124,6 +143,29 @@ public final class CrateLootManager {
         int count = entry.count > 0 ? entry.count : (min == max ? min : min + random.nextInt(max - min + 1));
         stack.setCount(Math.min(count, stack.getMaxStackSize()));
         return stack;
+    }
+
+    @Nullable
+    private static Holder<Potion> parsePotion(String nbt) {
+        if (nbt.contains("minecraft:strong_healing")) {
+            return Potions.STRONG_HEALING;
+        }
+        if (nbt.contains("minecraft:strong_regeneration")) {
+            return Potions.STRONG_REGENERATION;
+        }
+        if (nbt.contains("minecraft:healing")) {
+            return Potions.HEALING;
+        }
+        if (nbt.contains("minecraft:regeneration")) {
+            return Potions.REGENERATION;
+        }
+        if (nbt.contains("minecraft:fire_resistance")) {
+            return Potions.FIRE_RESISTANCE;
+        }
+        if (nbt.contains("minecraft:swiftness")) {
+            return Potions.SWIFTNESS;
+        }
+        return null;
     }
 
     @Nullable
@@ -263,12 +305,12 @@ public final class CrateLootManager {
                         entry("minecraft:arrow", 8, 8, 24)
                 ),
                 pool(2,
-                        entry("tacz:attachment", 8, 1, 1, "{AttachmentId:\"tacz:silencer_light\"}"),
-                        entry("tacz:attachment", 8, 1, 1, "{AttachmentId:\"tacz:reflex_sight\"}"),
-                        entry("tacz:attachment", 6, 1, 1, "{AttachmentId:\"tacz:light_stock\"}"),
-                        entry("tacz:attachment", 6, 1, 1, "{AttachmentId:\"tacz:vertical_grip\"}"),
-                        entry("minecraft:spyglass", 2, 1, 1),
-                        entry("minecraft:shield", 2, 1, 1)
+                        entry("minecraft:crossbow", 6, 1, 1),
+                        entry("minecraft:bow", 6, 1, 1),
+                        entry("minecraft:shield", 5, 1, 1),
+                        entry("minecraft:spyglass", 4, 1, 1),
+                        entry("minecraft:arrow", 8, 8, 24),
+                        entry("minecraft:spectral_arrow", 3, 4, 12)
                 )
         );
     }
@@ -320,3 +362,10 @@ public final class CrateLootManager {
         private String nbt;
     }
 }
+
+
+
+
+
+
+

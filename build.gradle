@@ -1,44 +1,17 @@
 plugins {
     id 'eclipse'
     id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.neoforged.moddev' version '2.0.78'
 }
 
 group = 'com.rks.airdrop'
-version = '1.0.5'
+version = '2.0.0'
 
 base {
     archivesName = 'rks_simple_airdrops'
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-minecraft {
-    mappings channel: 'official', version: '1.20.1'
-
-    copyIdeResources = true
-
-    runs {
-        configureEach {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                rks_airdrops {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        client {
-        }
-
-        server {
-        }
-    }
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
     maven {
@@ -48,16 +21,41 @@ repositories {
             includeGroup 'software.bernie.geckolib'
         }
     }
+    maven {
+        name = 'Shedaniel'
+        url = 'https://maven.shedaniel.me/'
+    }
 }
 
 dependencies {
-    def debugModsDir = new File(System.getenv('APPDATA'), '.minecraft\\modpacks\\debug\\mods')
-    def clothConfigJar = new File(debugModsDir, 'cloth-config-11.1.136-forge.jar')
+    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.3'
+    compileOnly 'me.shedaniel.cloth:cloth-config-neoforge:15.0.140'
+    runtimeOnly 'me.shedaniel.cloth:cloth-config-neoforge:15.0.140'
+}
 
-    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.4.9')
-    compileOnly files(clothConfigJar)
-    runtimeOnly files(clothConfigJar)
+neoForge {
+    version = '21.1.233'
+
+    runs {
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+
+        client {
+            client()
+        }
+
+        server {
+            server()
+        }
+    }
+
+    mods {
+        rks_airdrops {
+            sourceSet sourceSets.main
+        }
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -67,7 +65,7 @@ tasks.withType(JavaCompile).configureEach {
 processResources {
     inputs.property 'version', project.version
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
         expand version: project.version
     }
 }

@@ -3,7 +3,7 @@ package com.rks.airdrop.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -107,6 +107,34 @@ public final class AirdropSettings {
         return Math.max(60L, data.airdropIntervalSeconds) * 20L;
     }
 
+    public static double airdropFallSpeedBlocksPerSecond() {
+        return data.airdropFallSpeedBlocksPerSecond;
+    }
+
+    public static void setAirdropFallSpeedBlocksPerSecond(double speed) {
+        data.airdropFallSpeedBlocksPerSecond = speed;
+    }
+
+    public static double airdropFallSpeedBlocksPerTick() {
+        return data.airdropFallSpeedBlocksPerSecond / 20.0D;
+    }
+
+    public static int airdropSpawnHeight() {
+        return data.airdropSpawnHeight;
+    }
+
+    public static void setAirdropSpawnHeight(int height) {
+        data.airdropSpawnHeight = height;
+    }
+
+    public static boolean radioControllerConsumed() {
+        return data.radioControllerConsumed;
+    }
+
+    public static void setRadioControllerConsumed(boolean consumed) {
+        data.radioControllerConsumed = consumed;
+    }
+
     public static boolean radioControllerCraftable() {
         return data.radioControllerCraftable;
     }
@@ -119,11 +147,29 @@ public final class AirdropSettings {
         if (data.airdropIntervalSeconds < 60) {
             data.airdropIntervalSeconds = 60;
         }
+        if (data.airdropFallSpeedBlocksPerSecond < 0.5D) {
+            data.airdropFallSpeedBlocksPerSecond = 0.5D;
+        }
+        if (data.airdropFallSpeedBlocksPerSecond > 20.0D) {
+            data.airdropFallSpeedBlocksPerSecond = 20.0D;
+        }
+        if (data.airdropSpawnHeight < 96) {
+            data.airdropSpawnHeight = 96;
+        }
+        if (data.airdropSpawnHeight > 384) {
+            data.airdropSpawnHeight = 384;
+        }
     }
 
     private static final class Data {
         private boolean airdropsEnabled = true;
         private int airdropIntervalSeconds = 900;
+        private double airdropFallSpeedBlocksPerSecond = 3.0D;
+        private int airdropSpawnHeight = 192;
+        private boolean radioControllerConsumed = true;
         private boolean radioControllerCraftable = true;
     }
 }
+
+
+

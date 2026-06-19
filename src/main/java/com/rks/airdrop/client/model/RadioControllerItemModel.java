@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
 public class RadioControllerItemModel extends GeoModel<RadioControllerItem> {
-    private static final ResourceLocation MODEL = new ResourceLocation(RksAirdrops.MODID, "geo/radio_controller.geo.json");
-    private static final ResourceLocation TEXTURE = new ResourceLocation(RksAirdrops.MODID, "textures/item/radio_controller.png");
-    private static final ResourceLocation ANIMATION = new ResourceLocation(RksAirdrops.MODID, "animations/radio_controller.animation.json");
+    private static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "geo/radio_controller.geo.json");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "textures/item/radio_controller.png");
+    private static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(RksAirdrops.MODID, "animations/radio_controller.animation.json");
 
     @Override
     public ResourceLocation getModelResource(RadioControllerItem animatable) {
@@ -25,3 +25,6 @@ public class RadioControllerItemModel extends GeoModel<RadioControllerItem> {
         return ANIMATION;
     }
 }
+
+
+

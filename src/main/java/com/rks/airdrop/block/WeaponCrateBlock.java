@@ -3,8 +3,10 @@ package com.rks.airdrop.block;
 import com.rks.airdrop.blockentity.WeaponCrateBlockEntity;
 import com.rks.airdrop.registry.ModBlockEntities;
 import com.rks.airdrop.registry.ModBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,20 +30,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WeaponCrateBlock extends BaseEntityBlock {
-    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    public static final MapCodec<WeaponCrateBlock> CODEC = simpleCodec(WeaponCrateBlock::new);
+    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 
     public WeaponCrateBlock(Properties properties) {
@@ -51,8 +54,13 @@ public class WeaponCrateBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return RenderShape.INVISIBLE;
     }
 
     @Override
@@ -84,7 +92,7 @@ public class WeaponCrateBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         return openContainer(level, pos, player);
     }
 
@@ -95,10 +103,10 @@ public class WeaponCrateBlock extends BaseEntityBlock {
 
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof WeaponCrateBlockEntity weaponCrate && player instanceof ServerPlayer serverPlayer) {
-            NetworkHooks.openScreen(serverPlayer, weaponCrate, pos);
+            serverPlayer.openMenu(weaponCrate, pos);
         }
 
-        return InteractionResult.CONSUME;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -109,15 +117,18 @@ public class WeaponCrateBlock extends BaseEntityBlock {
             return;
         }
 
-        for (int[] offset : WeaponCrateShapeCache.getOccupiedOffsets(state.getValue(FACING))) {
+                BlockEntity blockEntity = level.getBlockEntity(pos);
+        CustomData blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (blockEntity != null && blockEntityData != null) {
+            blockEntityData.loadInto(blockEntity, level.registryAccess());
+            blockEntity.setChanged();
+        }
+
+for (int[] offset : WeaponCrateShapeCache.getOccupiedOffsets(state.getValue(FACING))) {
             BlockPos helperPos = pos.offset(offset[0], 0, offset[2]);
             level.setBlock(helperPos, ModBlocks.WEAPON_CRATE_HELPER.get().defaultBlockState()
                     .setValue(WeaponCrateHelperBlock.OFFSET_X, WeaponCrateHelperBlock.encodeOffset(offset[0]))
                     .setValue(WeaponCrateHelperBlock.OFFSET_Z, WeaponCrateHelperBlock.encodeOffset(offset[2])), 3);
-        }
-
-        if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof WeaponCrateBlockEntity weaponCrate) {
-            weaponCrate.setCustomName(stack.getHoverName());
         }
     }
 
@@ -128,7 +139,8 @@ public class WeaponCrateBlock extends BaseEntityBlock {
                 removeHelpers(level, pos);
             }
 
-            if (level.getBlockEntity(pos) instanceof WeaponCrateBlockEntity) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof WeaponCrateBlockEntity) {
                 level.updateNeighbourForOutputSignal(pos, this);
             }
         }
@@ -180,18 +192,18 @@ public class WeaponCrateBlock extends BaseEntityBlock {
         }
 
         ItemStack stack = new ItemStack(asItem());
-        CompoundTag blockEntityTag = weaponCrate.saveWithoutMetadata();
-        blockEntityTag.remove("id");
+        CompoundTag blockEntityTag = weaponCrate.saveWithoutMetadata(builder.getLevel().registryAccess());
+        blockEntityTag.putString("id", "rks_airdrops:weapon_crate");
         blockEntityTag.remove("x");
         blockEntityTag.remove("y");
         blockEntityTag.remove("z");
 
         if (!blockEntityTag.isEmpty()) {
-            stack.addTagElement("BlockEntityTag", blockEntityTag);
+            stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntityTag));
         }
 
         if (weaponCrate.hasCustomName()) {
-            stack.setHoverName(weaponCrate.getCustomName());
+            stack.set(DataComponents.CUSTOM_NAME, weaponCrate.getCustomName());
         }
 
         return List.of(stack);
@@ -208,3 +220,8 @@ public class WeaponCrateBlock extends BaseEntityBlock {
         }
     }
 }
+
+
+
+
+

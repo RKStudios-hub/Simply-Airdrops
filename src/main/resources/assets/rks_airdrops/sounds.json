@@ -1,0 +1,17 @@
+{
+  "airplane_sound_1": {
+    "sounds": [
+      "rks_airdrops:airplane-sound-1"
+    ]
+  },
+  "airplane_sound_2": {
+    "sounds": [
+      "rks_airdrops:airplane-sound-2"
+    ]
+  },
+  "airplane_sound_3": {
+    "sounds": [
+      "rks_airdrops:airplane-sound-3"
+    ]
+  }
+}

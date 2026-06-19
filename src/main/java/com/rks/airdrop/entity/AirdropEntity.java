@@ -1,11 +1,9 @@
 package com.rks.airdrop.entity;
 
+import com.rks.airdrop.config.AirdropSettings;
 import com.rks.airdrop.loot.CrateLootManager;
-import com.rks.airdrop.registry.ModItems;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,14 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class AirdropEntity extends Entity implements GeoEntity {
@@ -79,8 +76,8 @@ public class AirdropEntity extends Entity implements GeoEntity {
         super.tick();
 
         if (isDescending()) {
-            double nextY = Math.max(getDeltaMovement().y - 0.008D, -0.15D);
-            setDeltaMovement(0.0D, nextY, 0.0D);
+            double fallSpeed = Math.max(0.025D, AirdropSettings.airdropFallSpeedBlocksPerTick());
+            setDeltaMovement(0.0D, -fallSpeed, 0.0D);
             move(MoverType.SELF, getDeltaMovement());
             resetFallDistance();
 
@@ -128,8 +125,8 @@ public class AirdropEntity extends Entity implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(DESCENDING, Boolean.FALSE);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DESCENDING, Boolean.FALSE);
     }
 
     @Override
@@ -142,10 +139,6 @@ public class AirdropEntity extends Entity implements GeoEntity {
         tag.putBoolean("Descending", isDescending());
     }
 
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -181,10 +174,11 @@ public class AirdropEntity extends Entity implements GeoEntity {
         double baseY = getY() + (isDescending() ? 1.0D : 0.8D);
         double baseZ = getZ();
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 18; i++) {
             double offsetX = (random.nextDouble() - 0.5D) * 0.8D;
+            double offsetY = random.nextDouble() * 3.0D;
             double offsetZ = (random.nextDouble() - 0.5D) * 0.8D;
-            serverLevel.sendParticles(FLARE_PARTICLE, baseX + offsetX, baseY, baseZ + offsetZ, 1, 0.0D, 0.3D, 0.0D, 0.02D);
+            serverLevel.sendParticles(FLARE_PARTICLE, baseX + offsetX, baseY + offsetY, baseZ + offsetZ, 1, 0.0D, 0.3D, 0.0D, 0.02D);
         }
     }
 
@@ -193,12 +187,21 @@ public class AirdropEntity extends Entity implements GeoEntity {
             return;
         }
 
-        spawnAtLocation(CrateLootManager.createWoodenCrate(random));
-        spawnAtLocation(CrateLootManager.createMedicCrate(random));
-        spawnAtLocation(CrateLootManager.createMedicCrate(random));
-        spawnAtLocation(CrateLootManager.createAmmoCrate(random));
-        spawnAtLocation(CrateLootManager.createWeaponCrate(random));
+        if (!(level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        spawnAtLocation(CrateLootManager.createWoodenCrate(random, serverLevel.registryAccess()));
+        spawnAtLocation(CrateLootManager.createMedicCrate(random, serverLevel.registryAccess()));
+        spawnAtLocation(CrateLootManager.createMedicCrate(random, serverLevel.registryAccess()));
+        spawnAtLocation(CrateLootManager.createAmmoCrate(random, serverLevel.registryAccess()));
+        spawnAtLocation(CrateLootManager.createWeaponCrate(random, serverLevel.registryAccess()));
         spawnAtLocation(new ItemStack(Items.OAK_PLANKS, 4));
         discard();
     }
 }
+
+
+
+
+
